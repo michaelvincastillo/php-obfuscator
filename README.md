@@ -1,4 +1,4 @@
-# Janus File Compressor & Obfuscator (Web UI)
+# PHP File Obfuscator (Web UI)
 
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D%205.5-8892BF.svg)](https://www.php.net/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)

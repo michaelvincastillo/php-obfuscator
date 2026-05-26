@@ -1,6 +1,6 @@
 <?php
 /**
- * Janus File Compressor & Obfuscator (obfuscator.php)
+ * PHP File Obfuscator (obfuscator.php)
  * Uses gzcompress + stream wrapper, temp file, or AES-256 password encrypted execution stubs to obfuscate any PHP file.
  */
 
@@ -52,7 +52,7 @@ if ($requestMethod === 'POST' && isset($_FILES['phpfile'])) {
         // Strip trailing close tag
         $code = preg_replace('/\\?' . chr(62) . '\\s*$/', '', $code);
 
-        // Automatically bypass inner login screen of Janus file manager
+        // Automatically bypass inner login screen of target file manager
         $code = str_replace('$authenticated = false;', '$authenticated = true;', $code);
         $code = preg_replace(
             "/define\(\s*['\"]PASSWORD['\"]\s*,\s*['\"].*?['\"]\s*\)/i",
@@ -154,7 +154,7 @@ __halt_compiler();';
             $key = hash('sha256', $password, true);
             
             // Add sentinel check so the loader knows if decryption was successful
-            $plain = 'JANUS_OK' . $code;
+            $plain = 'SECUREOK' . $code;
             
             $iv_len = openssl_cipher_iv_length('aes-256-cbc');
             $iv = openssl_random_pseudo_bytes($iv_len);
@@ -245,7 +245,7 @@ if (isset($_POST[\'p\'])) {
     $iv = substr($d, 0, $iv_len);
     $ct = substr($d, $iv_len);
     $dec = openssl_decrypt($ct, \'aes-256-cbc\', $key, OPENSSL_RAW_DATA, $iv);
-    if ($dec !== false && substr($dec, 0, 8) === \'JANUS_OK\') {
+    if ($dec !== false && substr($dec, 0, 8) === \'SECUREOK\') {
         $_SESSION[\'obf_key\'] = $pass;
         setcookie(\'fm_auth\', hash(\'sha256\', $pass), time() + 86400 * 7, \'/\', \'\', false, true);
         $_COOKIE[\'fm_auth\'] = hash(\'sha256\', $pass);
@@ -261,7 +261,7 @@ if (isset($_POST[\'p\'])) {
     $iv = substr($d, 0, $iv_len);
     $ct = substr($d, $iv_len);
     $dec = openssl_decrypt($ct, \'aes-256-cbc\', $key, OPENSSL_RAW_DATA, $iv);
-    if ($dec !== false && substr($dec, 0, 8) === \'JANUS_OK\') {
+    if ($dec !== false && substr($dec, 0, 8) === \'SECUREOK\') {
         setcookie(\'fm_auth\', hash(\'sha256\', $pass), time() + 86400 * 7, \'/\', \'\', false, true);
         $_COOKIE[\'fm_auth\'] = hash(\'sha256\', $pass);
         $GLOBALS[\'data\'] = "<?php\n" . substr($dec, 8);
@@ -310,7 +310,7 @@ if ($requestMethod === 'POST' && isset($_POST['download_code'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Janus Compressor &amp; Obfuscator</title>
+    <title>PHP File Obfuscator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -896,7 +896,7 @@ if ($requestMethod === 'POST' && isset($_POST['download_code'])) {
     <header class="header">
         <div class="header__badge">
             <span class="dot"></span>
-            Janus Toolchain
+            PHP Toolchain
         </div>
         <h1>Compress &amp; Obfuscate</h1>
         <p>Upload and optimize any PHP script for secure production deployment using lightweight, memory-only execution wrappers.</p>
@@ -1097,7 +1097,7 @@ if ($requestMethod === 'POST' && isset($_POST['download_code'])) {
     </div>
 
     <footer class="footer">
-        Janus Toolchain &middot; Built with Premium Aesthetics &middot; PHP 5.5+ Compatible
+        PHP Toolchain &middot; Built with Premium Aesthetics &middot; PHP 5.5+ Compatible
     </footer>
 
 </div>
